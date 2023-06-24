@@ -17,7 +17,6 @@ const Main = styled.div`
 `;
 
 const Content = styled.div`
-	margin-left: 50px;
 	width: 850px;
 	height: 100vh;
 	display: flex;
@@ -25,14 +24,8 @@ const Content = styled.div`
 	align-items: center;
 	flex-direction: column;
 	padding-bottom: 50px;
-	@media (max-width: 1180px) {
+	@media (max-width: 925px) {
 		width: 80%;
-	}
-	@media (max-width: 900px) {
-		width: 90%;
-	}
-	@media (max-width: 800px) {
-		width: 95%;
 	}
 `;
 

@@ -70,6 +70,12 @@ const Section1 = styled.div`
 	align-items: center;
 	margin-top: 20px;
 	margin-bottom: 10px;
+	@media (max-width: 925px) {
+		display: flex;
+		justify-content: flex-start;
+		align-items: flex-start;
+		flex-direction: column;
+	}
 	input {
 		padding-left: 20px;
 		width: 70%;
