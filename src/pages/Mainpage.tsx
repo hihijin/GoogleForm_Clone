@@ -4,14 +4,16 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import Dnd from '../components/Dnd';
 import Question from '../components/Question';
+import Questions from '../components/Questions';
 import Sidebar from '../components/Sidebar';
 import Submit from '../components/Submit';
 import Title from '../components/Title';
 
 const Main = styled.div`
 	width: 100%;
-	height: 100vh;
+	padding: 50px 0;
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
@@ -19,7 +21,6 @@ const Main = styled.div`
 `;
 
 const Content = styled.div`
-	margin-top: 100px;
 	margin-left: 50px;
 	width: 850px;
 	display: flex;
@@ -38,7 +39,7 @@ const Content = styled.div`
 `;
 
 const Side = styled.div`
-	margin-top: 100px;
+	margin-top: 162px;
 	margin-left: 10px;
 	height: 80vh;
 `;
@@ -49,7 +50,9 @@ function Mainpage() {
 			<Content>
 				<Title />
 				<Question />
+				<Questions />
 				<Submit />
+				<Dnd />
 			</Content>
 			<Side>
 				<Sidebar />
