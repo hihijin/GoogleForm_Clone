@@ -26,6 +26,10 @@ const Main = styled.div`
 		border-top-right-radius: 10px;
 		border-top-left-radius: 10px;
 	}
+	.blueLine {
+		border-bottom-left-radius: 5px;
+		border-left: 6px solid #4285f4;
+	}
 `;
 
 const Container = styled.div`
@@ -34,8 +38,6 @@ const Container = styled.div`
 	display: flex;
 	justify-content: flex-start;
 	align-items: flex-start;
-	border-bottom-left-radius: 5px;
-	border-left: 6px solid #4285f4;
 	flex-direction: column;
 	input {
 		padding-bottom: 5px;
@@ -63,7 +65,7 @@ function Title() {
 	const dispatch = useDispatch();
 	const title = useSelector((state: RootState) => state.title) as Ititle;
 
-	const titleHandler = (e: any) => {
+	const titleHandler = (e: { target: { value: any } }) => {
 		dispatch(
 			UPDATE({
 				title: e.target.value,
@@ -71,7 +73,7 @@ function Title() {
 		);
 	};
 
-	const detailHandler = (e: any) => {
+	const detailHandler = (e: { target: { value: any } }) => {
 		dispatch(
 			UPDATE({
 				detail: e.target.value,
@@ -79,18 +81,35 @@ function Title() {
 		);
 	};
 
+	//수정모드 활성화/비활성화 핸들러들
+	const editHandler = () => {
+		dispatch(
+			UPDATE({
+				editMode: true,
+			}),
+		);
+	};
+
+	const notEditHandler = () => {
+		dispatch(
+			UPDATE({
+				editMode: false,
+			}),
+		);
+	};
+
 	return (
-		<Main>
+		<Main onFocus={editHandler} onBlur={notEditHandler}>
 			<div className="topLine" />
-			<Container>
+			<Container className={title.editMode ? 'blueLine' : undefined}>
 				<input
-					onChange={(e) => titleHandler(e)}
+					onChange={titleHandler}
 					className="title"
 					type="text"
 					value={title.title}
 				/>
 				<input
-					onChange={(e) => detailHandler(e)}
+					onChange={detailHandler}
 					className="description"
 					type="text"
 					value={title.detail}
