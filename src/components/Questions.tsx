@@ -2,45 +2,28 @@ import '../Global.css';
 
 import React, { useRef } from 'react';
 
-import {
-	useDispatch,
-	useSelector,
-} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import {
-	makeStyles,
-	Switch,
-} from '@material-ui/core';
-import ArrowDropDownCircleOutlinedIcon
-	from '@mui/icons-material/ArrowDropDownCircleOutlined';
-import CheckBoxOutlineBlankOutlinedIcon
-	from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
+import { makeStyles, Switch } from '@material-ui/core';
+import ArrowDropDownCircleOutlinedIcon from '@mui/icons-material/ArrowDropDownCircleOutlined';
+import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import DeleteOutlineOutlinedIcon
-	from '@mui/icons-material/DeleteOutlineOutlined';
-import DragIndicatorOutlinedIcon
-	from '@mui/icons-material/DragIndicatorOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import RadioButtonUncheckedOutlinedIcon
-	from '@mui/icons-material/RadioButtonUncheckedOutlined';
+import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { UPDATEQUESTION } from '../reducer/nowQuestionReducer';
-import {
-	ADD,
-	EDIT,
-} from '../reducer/QuestionReducer';
+import { ADD, EDIT } from '../reducer/QuestionReducer';
 import { RootState } from '../store/Store';
-import {
-	Iquestion,
-	Iquestions,
-} from '../type/Iquestion';
+import { Iquestion, Iquestions } from '../type/Iquestion';
 import Answer1 from './Answers.tsx/Answer1';
 import Answer2 from './Answers.tsx/Answer2';
 
@@ -264,7 +247,7 @@ function Questions() {
 	};
 
 	//등록된 질문 옵션메뉴 수정 핸들러
-	const menuClickHandler = (e: any, menu: string, questionId: number) => {
+	const menuClickHandler = (menu: string, questionId: number) => {
 		const updatedQuestions = questions.map((question) =>
 			question.id === questionId ? { ...question, type: menu } : question,
 		);
@@ -273,7 +256,10 @@ function Questions() {
 	};
 
 	//질문 title 업데이트 핸들러
-	const titleChangeHandler = (e: any, questionId: number) => {
+	const titleChangeHandler = (
+		e: React.ChangeEvent<HTMLInputElement>,
+		questionId: number,
+	) => {
 		const updatedQuestions = questions.map((question) =>
 			question.id === questionId
 				? { ...question, title: e.target.value }
@@ -289,16 +275,6 @@ function Questions() {
 		);
 		dispatch(EDIT(updatedQuestions));
 	};
-	/*
-	const editHandler2 = (questionId: number) => {
-		const updatedQuestions = questions.map((question) =>
-			question.id === questionId
-				? { ...question, editMode: true }
-				: { ...question, editMode: false },
-		);
-		dispatch(EDIT(updatedQuestions));
-	};
-	*/
 
 	const notEditHandler = (questionId: number) => {
 		const updatedQuestions = questions.map((question) =>
@@ -310,23 +286,52 @@ function Questions() {
 	//등록된 질문의 answer text 수정 핸들러
 	const textChangeHandler = (
 		e: React.ChangeEvent<HTMLInputElement>,
-		radioId: number,
+		answerId: number,
 		questionId: number,
+		questionType: string,
 	) => {
 		const updatedQuestions = questions.map((question) => {
 			if (question.id === questionId) {
-				return {
-					...question,
-					radio: (question.radio || []).map((radio) => {
-						if (radio.id === radioId) {
-							return {
-								id: radioId,
-								option: e.target.value,
-							};
-						}
-						return radio;
-					}),
-				};
+				if (questionType === '객관식 질문') {
+					return {
+						...question,
+						radio: (question.radio || []).map((radio) => {
+							if (radio.id === answerId) {
+								return {
+									id: answerId,
+									option: e.target.value,
+								};
+							}
+							return radio;
+						}),
+					};
+				} else if (questionType === '체크박스') {
+					return {
+						...question,
+						checkbox: (question.checkbox || []).map((checkbox) => {
+							if (checkbox.id === answerId) {
+								return {
+									id: answerId,
+									option: e.target.value,
+								};
+							}
+							return checkbox;
+						}),
+					};
+				} else if (questionType === '드롭다운') {
+					return {
+						...question,
+						select: (question.select || []).map((select) => {
+							if (select.id === answerId) {
+								return {
+									id: answerId,
+									option: e.target.value,
+								};
+							}
+							return select;
+						}),
+					};
+				}
 			}
 			return question;
 		});
@@ -335,21 +340,44 @@ function Questions() {
 	};
 
 	// 등록된 질문에서 answer의 옵션 추가 핸들러
-	const addOptionHandler = (questionId: number) => {
-		const radioId = questions[0].radio ? questions[0].radio.length + 1 : 1;
-		console.log(radioId);
+	const addOptionHandler = (questionId: number, questionType: string) => {
 		const updatedQuestions = questions.map((question) => {
 			if (question.id === questionId) {
-				return {
-					...question,
-					radio: [
-						...question.radio!,
-						{
-							id: radioId,
-							option: '옵션',
-						},
-					],
-				};
+				if (questionType === '객관식 질문') {
+					console.log('d');
+					return {
+						...question,
+						radio: [
+							...question.radio!,
+							{
+								id: question.radio ? question.radio.length + 1 : 1,
+								option: '옵션',
+							},
+						],
+					};
+				} else if (questionType === '체크박스') {
+					return {
+						...question,
+						checkbox: [
+							...question.checkbox!,
+							{
+								id: question.checkbox ? question.checkbox.length + 1 : 1,
+								option: '옵션',
+							},
+						],
+					};
+				} else if (questionType === '드롭다운') {
+					return {
+						...question,
+						select: [
+							...question.select!,
+							{
+								id: question.select ? question.select.length + 1 : 1,
+								option: '옵션',
+							},
+						],
+					};
+				}
 			}
 			return question;
 		});
@@ -460,8 +488,8 @@ function Questions() {
 										>
 											<MenuItem
 												value="단답형"
-												onMouseDown={(e) =>
-													menuClickHandler(e, '단답형', question.id!)
+												onMouseDown={() =>
+													menuClickHandler('단답형', question.id!)
 												}
 											>
 												<div
@@ -478,8 +506,8 @@ function Questions() {
 											</MenuItem>
 											<MenuItem
 												value="장문형"
-												onMouseDown={(e) =>
-													menuClickHandler(e, '장문형', question.id!)
+												onMouseDown={() =>
+													menuClickHandler('장문형', question.id!)
 												}
 											>
 												<div
@@ -496,8 +524,8 @@ function Questions() {
 											</MenuItem>
 											<MenuItem
 												value="객관식 질문"
-												onMouseDown={(e) =>
-													menuClickHandler(e, '객관식 질문', question.id!)
+												onMouseDown={() =>
+													menuClickHandler('객관식 질문', question.id!)
 												}
 											>
 												<div
@@ -514,8 +542,8 @@ function Questions() {
 											</MenuItem>
 											<MenuItem
 												value="체크박스"
-												onMouseDown={(e) =>
-													menuClickHandler(e, '체크박스', question.id!)
+												onMouseDown={() =>
+													menuClickHandler('체크박스', question.id!)
 												}
 											>
 												<div
@@ -532,8 +560,8 @@ function Questions() {
 											</MenuItem>
 											<MenuItem
 												value="드롭다운"
-												onMouseDown={(e) =>
-													menuClickHandler(e, '드롭다운', question.id!)
+												onMouseDown={() =>
+													menuClickHandler('드롭다운', question.id!)
 												}
 											>
 												<div
@@ -565,7 +593,12 @@ function Questions() {
 														<input
 															className="textInput"
 															onChange={(e) =>
-																textChangeHandler(e, answer.id!, question.id!)
+																textChangeHandler(
+																	e,
+																	answer.id!,
+																	question.id!,
+																	question.type!,
+																)
 															}
 															type="text"
 															value={answer.option}
@@ -592,7 +625,9 @@ function Questions() {
 										<Option>
 											<RadioButtonUncheckedOutlinedIcon className="color" />
 											<div
-												onClick={() => addOptionHandler(question.id!)}
+												onClick={() =>
+													addOptionHandler(question.id!, question.type!)
+												}
 												className="addInput"
 											>
 												옵션추가
@@ -605,20 +640,26 @@ function Questions() {
 							{question.type === '체크박스' && (
 								<Sidebar>
 									<ul>
-										{question.radio &&
-											question.radio.map((answer) => (
+										{question.checkbox &&
+											question.checkbox.map((answer) => (
 												<li key={answer.id}>
 													<Option>
 														<CheckBoxOutlineBlankOutlinedIcon className="color" />
 														<input
 															className="textInput"
 															onChange={(e) =>
-																textChangeHandler(e, answer.id!, question.id!)
+																textChangeHandler(
+																	e,
+																	answer.id!,
+																	question.id!,
+																	question.type!,
+																)
 															}
 															type="text"
 															value={answer.option}
 														/>
-														{question.radio!.length > 1 && question.editMode ? (
+														{question.checkbox!.length > 1 &&
+														question.editMode ? (
 															<CloseOutlinedIcon
 																className="deleteBtn"
 																onClick={() =>
@@ -640,7 +681,9 @@ function Questions() {
 										<Option>
 											<CheckBoxOutlineBlankOutlinedIcon className="color" />
 											<div
-												onClick={() => addOptionHandler(question.id!)}
+												onClick={() =>
+													addOptionHandler(question.id!, question.type!)
+												}
 												className="addInput"
 											>
 												옵션추가
@@ -653,20 +696,26 @@ function Questions() {
 							{question.type === '드롭다운' && (
 								<Sidebar>
 									<ul>
-										{question.radio &&
-											question.radio.map((answer) => (
+										{question.select &&
+											question.select.map((answer) => (
 												<li key={answer.id}>
 													<Option>
 														<div>{answer.id}</div>
 														<input
 															className="textInput"
 															onChange={(e) =>
-																textChangeHandler(e, answer.id!, question.id!)
+																textChangeHandler(
+																	e,
+																	answer.id!,
+																	question.id!,
+																	question.type!,
+																)
 															}
 															type="text"
 															value={answer.option}
 														/>
-														{question.radio!.length > 1 && question.editMode ? (
+														{question.select!.length > 1 &&
+														question.editMode ? (
 															<CloseOutlinedIcon
 																className="deleteBtn"
 																onClick={() =>
@@ -688,7 +737,9 @@ function Questions() {
 										<Option>
 											<div>{question.select!.length + 1}</div>
 											<div
-												onClick={() => addOptionHandler(question.id!)}
+												onClick={() =>
+													addOptionHandler(question.id!, question.type!)
+												}
 												className="addInput"
 											>
 												옵션추가
