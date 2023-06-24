@@ -2,9 +2,14 @@ import '../Global.css';
 
 import React from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+
+import { ALLDELETE } from '../reducer/QuestionReducer';
+import { RootState } from '../store/Store';
+import { Iquestions } from '../type/Iquestion';
 
 const Main = styled.div`
 	width: 100%;
@@ -41,6 +46,11 @@ const Content = styled.div`
 `;
 
 function Submit() {
+	const dispatch = useDispatch();
+	const questions = useSelector(
+		(state: RootState) => state.nowQuestion,
+	) as Iquestions;
+
 	const submitHandler = () => {
 		console.log('제출완료');
 	};
@@ -51,7 +61,9 @@ function Submit() {
 
 	const deleteHandler = () => {
 		console.log('삭제완료');
+		dispatch(ALLDELETE());
 	};
+
 	return (
 		<Main>
 			<button onClick={submitHandler}>제출</button>
