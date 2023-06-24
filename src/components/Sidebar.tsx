@@ -41,7 +41,6 @@ function Sidebar() {
 	) as Iquestions;
 
 	const addHandler = () => {
-		console.log('추가');
 		//현재 질문을 질문목록에 추가
 		dispatch(ADD({ ...nowQuestion, id: questions.length + 1 }));
 	};

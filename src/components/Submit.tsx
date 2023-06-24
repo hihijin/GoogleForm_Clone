@@ -2,20 +2,20 @@ import '../Global.css';
 
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 
 import { ALLDELETE } from '../reducer/QuestionReducer';
-import { RootState } from '../store/Store';
-import { Iquestions } from '../type/Iquestion';
 
 const Main = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding-bottom: 50px;
 	button {
 		background: #673ab7;
 		color: white;
@@ -47,28 +47,20 @@ const Content = styled.div`
 
 function Submit() {
 	const dispatch = useDispatch();
-	const questions = useSelector(
-		(state: RootState) => state.nowQuestion,
-	) as Iquestions;
-
-	const submitHandler = () => {
-		console.log('제출완료');
-	};
-
-	const previewHandler = () => {
-		console.log('미리보기');
-	};
 
 	const deleteHandler = () => {
-		console.log('삭제완료');
 		dispatch(ALLDELETE());
 	};
 
 	return (
 		<Main>
-			<button onClick={submitHandler}>제출</button>
+			<Link to="/submit">
+				<button>제출</button>
+			</Link>
 			<Content>
-				<RemoveRedEyeOutlinedIcon className="color" onClick={previewHandler} />
+				<Link to="/preview">
+					<RemoveRedEyeOutlinedIcon className="color" />
+				</Link>
 				<div onClick={deleteHandler}>양식지우기</div>
 			</Content>
 		</Main>

@@ -4,11 +4,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import Question from '../components/Question';
-import Questions from '../components/Questions';
-import Sidebar from '../components/Sidebar';
-import Submit from '../components/Submit';
-import Title from '../components/Title';
+import SubmitTitle from '../components/SubmitTitle';
 
 const Main = styled.div`
 	width: 100%;
@@ -23,6 +19,7 @@ const Main = styled.div`
 const Content = styled.div`
 	margin-left: 50px;
 	width: 850px;
+	height: 100vh;
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -39,26 +36,14 @@ const Content = styled.div`
 	}
 `;
 
-const Side = styled.div`
-	margin-top: 162px;
-	margin-left: 10px;
-	height: 80vh;
-`;
-
-function Mainpage() {
+function SubmitPage() {
 	return (
 		<Main>
 			<Content>
-				<Title />
-				<Question />
-				<Questions />
-				<Submit />
+				<SubmitTitle />
 			</Content>
-			<Side>
-				<Sidebar />
-			</Side>
 		</Main>
 	);
 }
 
-export default Mainpage;
+export default SubmitPage;
