@@ -2,6 +2,7 @@ import '../Global.css';
 
 import React, { useState } from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { makeStyles, Switch } from '@material-ui/core';
@@ -15,6 +16,10 @@ import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import { UPDATEQUESTION } from '../reducer/nowQuestionReducer';
+import { ADD, EDIT } from '../reducer/QuestionReducer';
+import { RootState } from '../store/Store';
+import { Iquestion, Iquestions } from '../type/Iquestion';
 import Answer1 from './Answers.tsx/Answer1';
 import Answer2 from './Answers.tsx/Answer2';
 import Answer3 from './Answers.tsx/Answer3';
@@ -47,13 +52,15 @@ const Main = styled.div`
 		justify-content: baseline;
 		align-items: center;
 	}
+	.blueLine {
+		border-bottom-left-radius: 5px;
+		border-top-left-radius: 5px;
+		border-left: 6px solid #4285f4;
+	}
 `;
 
 const Container = styled.div`
 	width: 100%;
-	border-bottom-left-radius: 5px;
-	border-top-left-radius: 5px;
-	border-left: 6px solid #4285f4;
 	padding-left: 20px;
 `;
 
@@ -74,6 +81,9 @@ const Section1 = styled.div`
 		&::placeholder {
 			font-size: 15px;
 			color: rgba(0, 0, 0, 0.4);
+		}
+		&:focus {
+			border-bottom: 3px solid #673ab7;
 		}
 	}
 `;
@@ -101,24 +111,79 @@ const Section3 = styled.div`
 `;
 
 function Question() {
+	const dispatch = useDispatch();
+	const nowQuestion = useSelector(
+		(state: RootState) => state.nowQuestion,
+	) as Iquestion;
+
+	const questions = useSelector(
+		(state: RootState) => state.question,
+	) as Iquestions;
+
 	const classes = useStyles();
 	const [checked, setChecked] = useState(false);
 
 	const checkHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setChecked(event.target.checked);
+		dispatch(
+			UPDATEQUESTION({
+				isNecessary: event.target.checked,
+			}),
+		);
 	};
 
-	const [menu, setMenu] = useState('');
+	const [menu, setMenu] = useState('단답형');
 
 	const handleChange = (event: SelectChangeEvent) => {
 		setMenu(event.target.value);
+		dispatch(
+			UPDATEQUESTION({
+				type: event.target.value,
+			}),
+		);
+	};
+
+	//질문 title 업데이트 핸들러
+	const titleHandler = (e: any) => {
+		const id = questions.length === 0 ? 1 : questions.length + 1;
+		dispatch(
+			UPDATEQUESTION({
+				id,
+				title: e.target.value,
+			}),
+		);
+	};
+
+	//현재 질문 복사 핸들러
+	const copyQuestionHandler = () => {
+		//현재 질문을 질문목록에 추가
+		dispatch(ADD({ ...nowQuestion }));
+	};
+
+	// 질문목록 전체 수정모드 비활성화 핸들러
+	const notEditHandler = () => {
+		const updatedQuestions = questions.map((question) => ({
+			...question,
+			editMode: false,
+		}));
+		dispatch(EDIT(updatedQuestions));
+		dispatch(
+			UPDATEQUESTION({
+				...nowQuestion,
+				editMode: true,
+			}),
+		);
 	};
 
 	return (
-		<Main>
-			<Container>
+		<Main onClick={notEditHandler}>
+			<Container className={nowQuestion.editMode ? 'blueLine' : undefined}>
 				<Section1>
-					<input placeholder="질문" />
+					<input
+						onChange={(e) => titleHandler(e)}
+						placeholder="질문"
+						value={nowQuestion.title}
+					/>
 					<div>
 						<Select
 							sx={{
@@ -140,7 +205,7 @@ function Question() {
 							onChange={handleChange}
 							displayEmpty
 						>
-							<MenuItem value="">
+							<MenuItem value="단답형">
 								<div
 									className="select_section"
 									style={{
@@ -153,7 +218,7 @@ function Question() {
 									<span style={{ margin: '0 10px' }}>단답형</span>
 								</div>
 							</MenuItem>
-							<MenuItem value="10">
+							<MenuItem value="장문형">
 								<div
 									className="select_section"
 									style={{
@@ -166,7 +231,7 @@ function Question() {
 									<span style={{ margin: '0 10px' }}>장문형</span>
 								</div>
 							</MenuItem>
-							<MenuItem value="20">
+							<MenuItem value="객관식 질문">
 								<div
 									className="select_section"
 									style={{
@@ -179,7 +244,7 @@ function Question() {
 									<span style={{ margin: '0 10px' }}>객관식 질문</span>
 								</div>
 							</MenuItem>
-							<MenuItem value="30">
+							<MenuItem value="체크박스">
 								<div
 									className="select_section"
 									style={{
@@ -192,7 +257,7 @@ function Question() {
 									<span style={{ margin: '0 10px' }}>체크박스</span>
 								</div>
 							</MenuItem>
-							<MenuItem value="40">
+							<MenuItem value="드롭다운">
 								<div
 									className="select_section"
 									style={{
@@ -208,13 +273,17 @@ function Question() {
 						</Select>
 					</div>
 				</Section1>
-				{menu === '' && <Answer1 />}
-				{menu === '10' && <Answer2 />}
-				{menu === '20' && <Answer3 />}
-				{menu === '30' && <Answer4 />}
-				{menu === '40' && <Answer5 />}
+				{menu === '단답형' && <Answer1 />}
+				{menu === '장문형' && <Answer2 />}
+				{menu === '객관식 질문' && <Answer3 />}
+				{menu === '체크박스' && <Answer4 />}
+				{menu === '드롭다운' && <Answer5 />}
 				<Section3>
-					<ContentCopyOutlinedIcon fontSize="small" className="color" />
+					<ContentCopyOutlinedIcon
+						fontSize="small"
+						className="color"
+						onClick={copyQuestionHandler}
+					/>
 					<div className="space" />
 					<DeleteOutlineOutlinedIcon className="color" />
 					<div className="need">필수</div>
