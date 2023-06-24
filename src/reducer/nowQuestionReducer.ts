@@ -10,18 +10,21 @@ const initialState: Iquestion = {
 		{
 			id: 1,
 			option: '옵션',
+			isChecked: false,
 		},
 	],
 	checkbox: [
 		{
 			id: 1,
 			option: '옵션',
+			isChecked: false,
 		},
 	],
 	select: [
 		{
 			id: 1,
 			option: '옵션',
+			isChecked: false,
 		},
 	],
 	isNecessary: false,

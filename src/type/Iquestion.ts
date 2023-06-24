@@ -1,6 +1,7 @@
 export interface Option {
 	id?: number;
 	option?: string;
+	isChecked?: boolean;
 }
 
 export interface Iquestion {
