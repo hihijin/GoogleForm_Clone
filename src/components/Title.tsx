@@ -2,7 +2,12 @@ import '../Global.css';
 
 import React from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+import { UPDATE } from '../reducer/TitleReducer';
+import { RootState } from '../store/Store';
+import { Ititle } from '../type/Ititle';
 
 const Main = styled.div`
 	width: 100%;
@@ -55,12 +60,41 @@ const Container = styled.div`
 `;
 
 function Title() {
+	const dispatch = useDispatch();
+	const title = useSelector((state: RootState) => state.title) as Ititle;
+
+	const titleHandler = (e: any) => {
+		dispatch(
+			UPDATE({
+				title: e.target.value,
+			}),
+		);
+	};
+
+	const detailHandler = (e: any) => {
+		dispatch(
+			UPDATE({
+				detail: e.target.value,
+			}),
+		);
+	};
+
 	return (
 		<Main>
 			<div className="topLine" />
 			<Container>
-				<input className="title" type="text" value="제목없는 설문지" />
-				<input className="description" type="text" value="설문지 설명" />
+				<input
+					onChange={(e) => titleHandler(e)}
+					className="title"
+					type="text"
+					value={title.title}
+				/>
+				<input
+					onChange={(e) => detailHandler(e)}
+					className="description"
+					type="text"
+					value={title.detail}
+				/>
 			</Container>
 		</Main>
 	);
