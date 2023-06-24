@@ -1,6 +1,6 @@
 import '../Global.css';
 
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
 	useDispatch,
@@ -21,6 +21,8 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import DeleteOutlineOutlinedIcon
 	from '@mui/icons-material/DeleteOutlineOutlined';
+import DragIndicatorOutlinedIcon
+	from '@mui/icons-material/DragIndicatorOutlined';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedOutlinedIcon
 	from '@mui/icons-material/RadioButtonUncheckedOutlined';
@@ -86,6 +88,17 @@ const Content = styled.div`
 const Container = styled.div`
 	width: 100%;
 	padding-left: 20px;
+	.dragIcon {
+		color: rgba(0, 0, 0, 0.3);
+		width: 100%;
+		text-align: center;
+		-ms-transform: rotate(90deg); /* IE 9 */
+		-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+		transform: rotate(90deg);
+		&:hover {
+			cursor: move;
+		}
+	}
 `;
 
 const Section1 = styled.div`
@@ -213,6 +226,31 @@ function Questions() {
 
 	//material ui css를 위한 모듈
 	const classes = useStyles();
+
+	//드래그앤드롭 상태
+	const dragItem = useRef<number | null>(null); // Specify the type for dragItem
+	const dragOverItem = useRef<number | null>(null); // Specify the type for dragOverItem
+
+	//드래그 시작핸들러
+	const dragStart = (e: React.DragEvent<HTMLDivElement>, position: number) => {
+		dragItem.current = position;
+		console.log((e.target as HTMLDivElement).innerHTML);
+	};
+	//드래그 끝났을 때 핸들러
+	const dragEnter = (e: React.DragEvent<HTMLDivElement>, position: number) => {
+		dragOverItem.current = position;
+		console.log((e.target as HTMLDivElement).innerHTML);
+	};
+	//드롭한 곳 상태 변경핸들러
+	const drop = (e: React.DragEvent<HTMLDivElement>) => {
+		const copyListItems = [...questions];
+		const dragItemContent = copyListItems[dragItem.current as number];
+		copyListItems.splice(dragItem.current as number, 1);
+		copyListItems.splice(dragOverItem.current as number, 0, dragItemContent);
+		dragItem.current = null;
+		dragOverItem.current = null;
+		dispatch(EDIT(copyListItems));
+	};
 
 	//등록된 질문 옵션메뉴 수정 핸들러
 	const menuChangeHandler = (event: SelectChangeEvent, questionId: number) => {
@@ -374,13 +412,21 @@ function Questions() {
 	return (
 		<Main onMouseDown={nowQuestionNotEditHandler}>
 			{questions.length > 0 &&
-				questions.map((question) => (
+				questions.map((question, index) => (
 					<Content
-						key={question.id}
+						key={index}
+						draggable
+						onDragStart={(e) => dragStart(e, index)}
+						onDragEnter={(e) => dragEnter(e, index)}
+						onDragEnd={drop}
+						onDragOver={(e) => e.preventDefault()}
 						onFocus={() => editHandler(question.id!)}
 						onBlur={() => notEditHandler(question.id!)}
 					>
 						<Container className={question.editMode ? 'blueLine' : undefined}>
+							<div className="dragIcon">
+								<DragIndicatorOutlinedIcon />
+							</div>
 							<Section1>
 								<div className="sideSection">
 									{question.isNecessary && <span className="redColor">*</span>}

@@ -4,7 +4,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import Dnd from '../components/Dnd';
 import Question from '../components/Question';
 import Questions from '../components/Questions';
 import Sidebar from '../components/Sidebar';
@@ -52,7 +51,6 @@ function Mainpage() {
 				<Question />
 				<Questions />
 				<Submit />
-				<Dnd />
 			</Content>
 			<Side>
 				<Sidebar />
