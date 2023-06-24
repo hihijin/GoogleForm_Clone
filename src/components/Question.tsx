@@ -108,6 +108,11 @@ const Section3 = styled.div`
 	.color {
 		color: rgba(0, 0, 0, 0.6);
 	}
+	.click {
+		&:hover {
+			cursor: pointer;
+		}
+	}
 `;
 
 function Question() {
@@ -143,8 +148,16 @@ function Question() {
 		);
 	};
 
+	const menuChangeClick = (menu: string) => {
+		dispatch(
+			UPDATEQUESTION({
+				type: menu,
+			}),
+		);
+	};
+
 	//질문 title 업데이트 핸들러
-	const titleHandler = (e: any) => {
+	const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const id = questions.length === 0 ? 1 : questions.length + 1;
 		dispatch(
 			UPDATEQUESTION({
@@ -205,7 +218,10 @@ function Question() {
 							onChange={handleChange}
 							displayEmpty
 						>
-							<MenuItem value="단답형">
+							<MenuItem
+								value="단답형"
+								onMouseDown={() => menuChangeClick('단답형')}
+							>
 								<div
 									className="select_section"
 									style={{
@@ -218,7 +234,10 @@ function Question() {
 									<span style={{ margin: '0 10px' }}>단답형</span>
 								</div>
 							</MenuItem>
-							<MenuItem value="장문형">
+							<MenuItem
+								value="장문형"
+								onMouseDown={() => menuChangeClick('장문형')}
+							>
 								<div
 									className="select_section"
 									style={{
@@ -231,7 +250,10 @@ function Question() {
 									<span style={{ margin: '0 10px' }}>장문형</span>
 								</div>
 							</MenuItem>
-							<MenuItem value="객관식 질문">
+							<MenuItem
+								value="객관식 질문"
+								onMouseDown={() => menuChangeClick('객관식 질문')}
+							>
 								<div
 									className="select_section"
 									style={{
@@ -244,7 +266,10 @@ function Question() {
 									<span style={{ margin: '0 10px' }}>객관식 질문</span>
 								</div>
 							</MenuItem>
-							<MenuItem value="체크박스">
+							<MenuItem
+								value="체크박스"
+								onMouseDown={() => menuChangeClick('체크박스')}
+							>
 								<div
 									className="select_section"
 									style={{
@@ -257,7 +282,10 @@ function Question() {
 									<span style={{ margin: '0 10px' }}>체크박스</span>
 								</div>
 							</MenuItem>
-							<MenuItem value="드롭다운">
+							<MenuItem
+								value="드롭다운"
+								onMouseDown={() => menuChangeClick('드롭다운')}
+							>
 								<div
 									className="select_section"
 									style={{
@@ -281,8 +309,8 @@ function Question() {
 				<Section3>
 					<ContentCopyOutlinedIcon
 						fontSize="small"
-						className="color"
-						onClick={copyQuestionHandler}
+						className="color click"
+						onMouseDown={copyQuestionHandler}
 					/>
 					<div className="space" />
 					<DeleteOutlineOutlinedIcon className="color" />
