@@ -1,4 +1,4 @@
-import '../Global.css';
+import '../../Global.css';
 
 import React from 'react';
 
@@ -6,9 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-
-import { ALLDELETE } from '../reducer/QuestionReducer';
+import { ALLDELETE } from '../../reducer/QuestionReducer';
 
 const Main = styled.div`
 	width: 100%;
@@ -58,9 +56,6 @@ function Submit() {
 				<button>제출</button>
 			</Link>
 			<Content>
-				<Link to="/preview">
-					<RemoveRedEyeOutlinedIcon className="color" />
-				</Link>
 				<div onClick={deleteHandler}>양식지우기</div>
 			</Content>
 		</Main>

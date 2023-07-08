@@ -4,11 +4,11 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import Question from '../components/Question';
-import Questions from '../components/Questions';
-import Sidebar from '../components/Sidebar';
-import Submit from '../components/Submit';
-import Title from '../components/Title';
+import Question from '../components/question/Question';
+import Questions from '../components/question/Questions';
+import QuestionTitle from '../components/question/QuestionTitle';
+import Sidebar from '../components/sidebar/Sidebar';
+import SubmitBtn from '../components/submit/SubmitBtn';
 
 const Main = styled.div`
 	width: 100%;
@@ -43,10 +43,10 @@ function Mainpage() {
 	return (
 		<Main>
 			<Content>
-				<Title />
+				<QuestionTitle />
 				<Question />
 				<Questions />
-				<Submit />
+				<SubmitBtn />
 			</Content>
 			<Side>
 				<Sidebar />

@@ -1,12 +1,12 @@
-import '../Global.css';
+import '../../Global.css';
 
 import React from 'react';
 
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { RootState } from '../store/Store';
-import { Ititle } from '../type/Ititle';
+import { RootState } from '../../store/Store';
+import { Ititle } from '../../type/Ititle';
 
 const Main = styled.div`
 	width: 100%;
@@ -39,19 +39,30 @@ const Container = styled.div`
 		width: 92%;
 		border: none;
 		outline: none;
-		color: black;
+	}
+	.title {
 		font-size: 30px;
 		margin-bottom: 20px;
 		margin: 0 30px;
 		padding-top: 20px;
+		color: black;
+	}
+	.description {
+		margin: 30px;
+		margin-bottom: 10px;
+		color: black;
 	}
 	div {
-		font-size: 13px;
-		margin: 30px;
+		width: 100%;
+		margin-top: 10px;
+		padding: 40px 0 20px 30px;
+		color: red;
+		border-top: 1px solid rgba(0, 0, 0, 0.2);
+		font-size: 14px;
 	}
 `;
 
-function SubmitTitle() {
+function PreviewTitle() {
 	const title = useSelector((state: RootState) => state.title) as Ititle;
 
 	return (
@@ -59,10 +70,16 @@ function SubmitTitle() {
 			<div className="topLine" />
 			<Container>
 				<input disabled className="title" type="text" value={title.title} />
-				<div>응답이 기록되었습니다.</div>
+				<input
+					disabled
+					className="description"
+					type="text"
+					value={title.detail}
+				/>
+				<div>* 필수항목</div>
 			</Container>
 		</Main>
 	);
 }
 
-export default SubmitTitle;
+export default PreviewTitle;

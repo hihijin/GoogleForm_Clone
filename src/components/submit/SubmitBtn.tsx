@@ -1,4 +1,4 @@
-import '../Global.css';
+import '../../Global.css';
 
 import React from 'react';
 
@@ -6,7 +6,9 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { ALLDELETE } from '../reducer/QuestionReducer';
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+
+import { ALLDELETE } from '../../reducer/QuestionReducer';
 
 const Main = styled.div`
 	width: 100%;
@@ -43,7 +45,7 @@ const Content = styled.div`
 	}
 `;
 
-function Submit() {
+function SubmitBtn() {
 	const dispatch = useDispatch();
 
 	const deleteHandler = () => {
@@ -56,10 +58,13 @@ function Submit() {
 				<button>제출</button>
 			</Link>
 			<Content>
+				<Link to="/preview">
+					<RemoveRedEyeOutlinedIcon className="color" />
+				</Link>
 				<div onClick={deleteHandler}>양식지우기</div>
 			</Content>
 		</Main>
 	);
 }
 
-export default Submit;
+export default SubmitBtn;

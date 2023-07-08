@@ -1,4 +1,4 @@
-import '../Global.css';
+import '../../Global.css';
 
 import React, { useRef } from 'react';
 
@@ -20,12 +20,12 @@ import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-import { UPDATEQUESTION } from '../reducer/nowQuestionReducer';
-import { ADD, EDIT } from '../reducer/QuestionReducer';
-import { RootState } from '../store/Store';
-import { Iquestion, Iquestions } from '../type/Iquestion';
-import Answer1 from './Answers.tsx/Answer1';
-import Answer2 from './Answers.tsx/Answer2';
+import { UPDATEQUESTION } from '../../reducer/nowQuestionReducer';
+import { ADD, EDIT } from '../../reducer/QuestionReducer';
+import { RootState } from '../../store/Store';
+import { Iquestion, Iquestions } from '../../type/Iquestion';
+import Answer1 from '../answer/Answer1';
+import Answer2 from '../answer/Answer2';
 
 const useStyles = makeStyles((theme) => ({
 	toggle: {

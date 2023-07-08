@@ -4,9 +4,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import PreSubmit from '../components/PreSubmit';
-import PreviewQuestion from '../components/PreviewQuestion';
-import PreviewTitle from '../components/PreviewTitle';
+import PreSubmit from '../components/preview/PreSubmit';
+import PreviewQuestion from '../components/preview/PreviewQuestion';
+import PreviewTitle from '../components/preview/PreviewTitle';
 
 const Main = styled.div`
 	width: 100%;

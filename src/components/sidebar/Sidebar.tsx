@@ -1,4 +1,4 @@
-import '../Global.css';
+import '../../Global.css';
 
 import React from 'react';
 
@@ -7,9 +7,9 @@ import styled from 'styled-components';
 
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
-import { ADD } from '../reducer/QuestionReducer';
-import { RootState } from '../store/Store';
-import { Iquestion, Iquestions } from '../type/Iquestion';
+import { ADD } from '../../reducer/QuestionReducer';
+import { RootState } from '../../store/Store';
+import { Iquestion, Iquestions } from '../../type/Iquestion';
 
 const Main = styled.div`
 	display: flex;

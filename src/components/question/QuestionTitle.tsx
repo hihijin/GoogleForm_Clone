@@ -1,13 +1,13 @@
-import '../Global.css';
+import '../../Global.css';
 
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { UPDATE } from '../reducer/TitleReducer';
-import { RootState } from '../store/Store';
-import { Ititle } from '../type/Ititle';
+import { UPDATE } from '../../reducer/TitleReducer';
+import { RootState } from '../../store/Store';
+import { Ititle } from '../../type/Ititle';
 
 const Main = styled.div`
 	width: 100%;
@@ -61,7 +61,7 @@ const Container = styled.div`
 	}
 `;
 
-function Title() {
+function QuestionTitle() {
 	const dispatch = useDispatch();
 	const title = useSelector((state: RootState) => state.title) as Ititle;
 
@@ -119,4 +119,4 @@ function Title() {
 	);
 }
 
-export default Title;
+export default QuestionTitle;

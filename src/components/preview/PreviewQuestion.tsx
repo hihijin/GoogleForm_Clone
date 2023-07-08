@@ -1,4 +1,4 @@
-import '../Global.css';
+import '../../Global.css';
 
 import React, { useState } from 'react';
 
@@ -13,9 +13,9 @@ import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-import { EDIT } from '../reducer/QuestionReducer';
-import { RootState } from '../store/Store';
-import { Iquestions } from '../type/Iquestion';
+import { EDIT } from '../../reducer/QuestionReducer';
+import { RootState } from '../../store/Store';
+import { Iquestions } from '../../type/Iquestion';
 
 const Main = styled.div`
 	width: 100%;
